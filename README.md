@@ -1,1 +1,1 @@
-Write your own printf function.
+Printf ALX team project by Nikkita Rajaram and Ifesinachi Ogana
