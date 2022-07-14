@@ -1,1 +1,1 @@
-Printf ALX team project by Nikkita Rajaram and Ifesinachi Ogana
+Printf Project ALX (Nikkita Rajaram & Ifesinachi Ogana)
