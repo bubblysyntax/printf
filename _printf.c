@@ -1,42 +1,80 @@
+#include <stdarg.h>
 #include "main.h"
+#include <stdio.h>
+
 /**
-* _printf - is a function that selects the correct function to print.
-* @format: identifier to look for.
-* Return: the length of the string.
+* _printf - produces output according to a format.
+* @format: a character string.
+* Return: number of characters printed(
+* excluding the null terminator)
 */
-int _printf(const char * const format, ...)
+
+int _printf(const char *format, ...)
 {
-convert_match m[] = {
-{"%s", printf_string}, {"%c", printf_char},
-{"%%", printf_37},
-{"%i", printf_int}, {"%d", printf_dec}, {"%r", printf_srev},
-{"%R", printf_rot13}, {"%b", printf_bin}, {"%u", printf_unsigned},
-"%o", printf_oct}, {"%x", printf_hex}, {"%X", printf_HEX},
-{"%S", printf_exclusive_string}, {"%p", printf_pointer}
-};
+int count;
+int total = 0;
 va_list args;
-int i = 0, j, len = 0;
+int flag = 0;
+
+if (format == NULL)
+return (0);
+
 va_start(args, format);
-if (format == NULL || (format[0] == '%' && format[1] == '\0'))
-return (-1);
-Here:
-while (format[i] != '\0')
+for (count = 0; *(format + count) != '\0'; count++)
 {
-j = 13;
-while (j >= 0)
+if (format[count] == '%')
 {
-if (m[j].id[0] == format[i] && m[j].id[1] == format[i + 1])
-{
-len += m[j].f(args);
-i = i + 2;
-goto Here;
+flag = 1;
 }
-j--;
+else if (flag == 1)
+{
+flag = 0;
+switch (format[count])
+{
+case 'c':
+_putchar(va_arg(args, int));
+total += 1;
+break;
+case 's':
+total += _print_str(va_arg(args, char *));
+break;
+case '%':
+_putchar('%');
+total += 1;
+break;
+case 'd':
+total += _print_int((long)(va_arg(args, int)));
+break;
+case 'i':
+total += _print_int((long)(va_arg(args, int)));
+break;
+case 'b':
+total += to_Binary(va_arg(args, int));
+break;
+case 'u':
+total += _print_int(va_arg(args, unsigned int));
+break;
+case 'o':
+total += to_Octal(va_arg(args, int));
+break;
+case 'x':
+total += to_Hexa(va_arg(args, int));
+break;
+case 'X':
+total += to_Hexa(va_arg(args, int));
+break;
+default:
+_putchar('%');
+_putchar(format[count]);
+total += 2;
 }
-_putchar(format[i]);
-len++;
-i++;
+}
+else
+{
+_putchar(format[count]);
+total += 1;
+}
 }
 va_end(args);
-return (len);
+return (total);
 }
